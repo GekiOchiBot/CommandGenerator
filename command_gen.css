@@ -1,0 +1,26 @@
+unity {
+  display:flex;
+  flex-flow: column;
+  justify-content: center;
+  background-color: gray;
+  height:auto;
+  margin:0 0 1em;
+  padding-left: 40%;
+}
+.button{
+  border: 3px gray;
+  background-color: rgb(232, 232, 232);
+  padding-bottom: 10px;
+  padding-top: 10px;
+  width: 200px;
+  color: black;
+  transition: 0.25s;
+}
+.button:hover{
+  border: 3px gray;
+  background-color: rgb(42, 216, 66);
+  padding-bottom: 10px;
+  width: 200px;
+  color: rgb(255, 255, 255);
+  transition: 0.25s;
+}
