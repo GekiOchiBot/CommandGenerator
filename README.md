@@ -1,1 +1,1 @@
-# CommandsGeneratorは、マイクラのコマンドを人に教えるとき使えます
+# CommandGeneratorは、マイクラのコマンドを人に教えるとき使えます
