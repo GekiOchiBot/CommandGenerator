@@ -5,7 +5,8 @@
         <link rel="stylesheet" href="command_gen.css">
         <title>CommandsGenerator</title>
     </head>
-    <body>
+    <box id="body">
+    <body >
         <h1 style="text-align: center;">コマンドジェネレーター</h1>
         <unity>
             <button onclick="OnClick('shogeki')" class="button" >衝撃</button>
@@ -32,59 +33,134 @@
             <button onclick="Gen()" class="button">生成</button>
         </unity>
 
+        <unity>
+            <button onclick="Undo()" class="button">Undo</button>
+            <button onclick="Redo()" class="button">Redo</button>
+        </unity>
+
         <p id="dev_result_type">反復</p>
         <p id="dev_result_mode">常時実行</p>
         <p id="dev_result_condition">無条件</p>
         <p id="result" style="background-color: rgb(70, 209, 95); color: white"></p>
+    </body>
+    </box>
 
-        <script>
 
-            const type= document.getElementById("dev_result_type")
-            const mode = document.getElementById("dev_result_mode")
-            const condition = document.getElementById("dev_result_condition")
-            const Commands = document.getElementById("Commands")
-            const result = document.getElementById("result")
+<script>
 
-            function OnClick(tags) {
-                switch (tags) {
-                    case 'shogeki':
-                        type.innerText = "衝撃"
-                        break;
-                    case 'chain':
-                        type.innerText = "チェーン"
-                        
-                        break;
-                    case 'only_once':
-                        type.innerText = "チャット欄で一回"
-                        
-                        break;
-                    case 'repeat':
-                        type.innerText = "反復"
-                        
-                        break;
-                    case 'NeadRedstone':
-                        mode.innerText = "レッドストーンが必要"
-                        
-                        break;
-                    case 'EveryExecuting':
-                        mode.innerText = "常時実行"
-                        
-                        break;
-                    case 'NoCondition':
-                        condition.innerText = "無条件"
-                        
-                        break;
-                    case 'HasCondition':
-                        condition.innerText = "条件付き"
-                        
-                        break;
+    let settings_memory = ["常時実行","無条件"]
+    let UndoMemory = ["","","","",""]
+    let RedoMemory = ["","","","",""]
+
+    const type= document.getElementById("dev_result_type")
+    const mode = document.getElementById("dev_result_mode")
+    const condition = document.getElementById("dev_result_condition")
+    const Commands = document.getElementById("Commands")
+    const result = document.getElementById("result")
+
+    function OnClick(tags) {
+        switch (tags) {
+            case 'shogeki':
+                type.innerText = "衝撃"
+                if (mode.innerText == "" && condition.innerText == "") {
+                mode.innerText = settings_memory[0]
+                condition.innerText = settings_memory[1]
                 }
-            }
 
-            function Gen(){
-                result.innerText += type.innerText + " " + mode.innerText + " " + condition.innerText + "\n" + Commands.value + "\n"
-                Commands.innerText = ""
-            }
-        </script>
-</body>
+                break;
+            case 'chain':
+                type.innerText = "チェーン"
+                if (mode.innerText == "" && condition.innerText == "") {
+                mode.innerText = settings_memory[0]
+                condition.innerText = settings_memory[1]
+                }
+
+                
+                break;
+            case 'only_once':
+                type.innerText = "チャット欄で一回"
+                settings_memory[0] = mode.innerText
+                settings_memory[1] = condition.innerText
+                mode.innerText = ""
+                condition.innerText = ""
+                
+                break;
+            case 'repeat':
+                type.innerText = "反復"
+                if (mode.innerText == "" && condition.innerText == "") {
+                mode.innerText = settings_memory[0]
+                condition.innerText = settings_memory[1]
+                }
+
+                
+                break;
+            case 'NeadRedstone':
+                mode.innerText = "レッドストーンが必要"
+                
+                break;
+            case 'EveryExecuting':
+                mode.innerText = "常時実行"
+                
+                break;
+            case 'NoCondition':
+                condition.innerText = "無条件"
+                
+                break;
+            case 'HasCondition':
+                condition.innerText = "条件付き"
+                
+                break;
+        }
+    }
+
+    function Gen(){
+        Save("Un")
+        Save("Re")
+        result.innerText += type.innerText + " " + mode.innerText + " " + condition.innerText + "\n" + Commands.value + "\n"
+        Commands.innerText = ""
+    }
+
+    function Undo() {
+        if (type.innerText != UndoMemory[0]　|| mode.innerText != UndoMemory[1]　|| condition.innerText != UndoMemory[2]　|| Commands.value == UndoMemory[3]　|| result.innerText != UndoMemory[4]) {
+            Save("Re")
+        }
+        type.innerText = UndoMemory[0]
+        mode.innerText = UndoMemory[1]
+        condition.innerText = UndoMemory[2]
+        Commands.value = UndoMemory[3]
+        result.innerText = UndoMemory[4]
+        console.log(UndoMemory);
+    }
+    function Redo() {
+        if (type.innerText != RedoMemory[0]　|| mode.innerText != RedoMemory[1]　|| condition.innerText != RedoMemory[2]　|| Commands.value == RedoMemory[3]　|| result.innerText != RedoMemory[4]) {
+            Save("Un")
+        }
+        type.innerText = RedoMemory[0]
+        mode.innerText = RedoMemory[1]
+        condition.innerText = RedoMemory[2]
+        Commands.value = RedoMemory[3]
+        result.innerText = RedoMemory[4]
+    }
+
+    function Save(ModeType) {
+        switch (ModeType) {
+            case "Un":
+            UndoMemory[0] = type.innerText 
+            UndoMemory[1] = mode.innerText 
+            UndoMemory[2] = condition.innerText 
+            UndoMemory[3] = Commands.value 
+            UndoMemory[4] = result.innerText 
+                
+                break;
+            case "Re":
+            RedoMemory[0] = type.innerText 
+            RedoMemory[1] = mode.innerText 
+            RedoMemory[2] = condition.innerText 
+            RedoMemory[3] = Commands.value 
+            RedoMemory[4] = result.innerText 
+                
+                break;
+        }
+    }
+</script>
 </html>
