@@ -11,6 +11,7 @@
             <button onclick="OnClick('shogeki')" class="button" >衝撃</button>
             <button onclick="OnClick('chain')" class="button" >チェーン</button>
             <button onclick="OnClick('repeat')" class="button" >反復</button>
+            <button onclick="OnClick('only_once')" class="button" >チャット欄で一回</button>
         </unity>
     
         <unity>
@@ -51,6 +52,10 @@
                         break;
                     case 'chain':
                         type.innerText = "チェーン"
+                        
+                        break;
+                    case 'only_once':
+                        type.innerText = "チャット欄で一回"
                         
                         break;
                     case 'repeat':
